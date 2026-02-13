@@ -1,6 +1,8 @@
 import { useState } from "react";
 import axios from "axios";
 
+const BASE_URL = "https://ai-payroll-expense-management.onrender.com";
+
 export default function AddEmployee() {
 
   const [form, setForm] = useState({
@@ -11,14 +13,14 @@ export default function AddEmployee() {
   });
 
   const handleChange = (e) => {
-    setForm({...form, [e.target.name]: e.target.value});
+    setForm({ ...form, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      await axios.post("http://127.0.0.1:8000/employees/", {
+      await axios.post(`${BASE_URL}/employees/`, {
         name: form.name,
         base_salary: Number(form.base_salary),
         bonus: Number(form.bonus),
@@ -26,7 +28,7 @@ export default function AddEmployee() {
       });
 
       alert("Employee added successfully");
-      setForm({ name:"", base_salary:"", bonus:"", deductions:"" });
+      setForm({ name: "", base_salary: "", bonus: "", deductions: "" });
 
     } catch (error) {
       console.error(error);
@@ -35,7 +37,7 @@ export default function AddEmployee() {
   };
 
   return (
-    <div className="card" style={{marginTop:"20px"}}>
+    <div className="card" style={{ marginTop: "20px" }}>
       <h3>Add Employee</h3>
 
       <form onSubmit={handleSubmit}>

@@ -14,11 +14,15 @@ export default function Dashboard() {
     net_balance: 0
   });
 
-  useEffect(() => {
-    axios.get("http://127.0.0.1:8000/dashboard-summary/")
-      .then(res => setSummary(res.data))
-      .catch(err => console.error(err));
-  }, []);
+  const BASE_URL = "https://ai-payroll-expense-management.onrender.com";
+
+useEffect(() => {
+  axios.get(`${BASE_URL}/dashboard-summary/`)
+    .then(res => setSummary(res.data))
+    .catch(err => console.error(err));
+}, []);
+
+
 
   const burnRate = summary.total_expenses;
 

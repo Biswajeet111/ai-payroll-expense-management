@@ -1,25 +1,45 @@
+import { useEffect, useState } from "react";
+import axios from "axios";
+
+const BASE_URL = "https://ai-payroll-expense-management.onrender.com";
+
 export default function DashboardCards() {
+
+  const [summary, setSummary] = useState({
+    total_payroll: 0,
+    total_expenses: 0,
+    net_balance: 0
+  });
+
+  useEffect(() => {
+    axios.get(`${BASE_URL}/dashboard-summary/`)
+      .then(res => setSummary(res.data))
+      .catch(err => console.error(err));
+  }, []);
+
+  const burnRate = summary.total_expenses;
+
   return (
-    <div style={{display:"flex", gap:"20px", marginBottom:"20px",  flexWrap: "wrap"}}>
-      
+    <div style={{display:"flex", gap:"20px", marginBottom:"20px", flexWrap:"wrap"}}>
+
       <div className="card">
         <h3>Total Expenses</h3>
-        <p>₹0</p>
+        <p>₹{summary.total_expenses}</p>
       </div>
 
       <div className="card">
         <h3>Total Payroll</h3>
-        <p>₹0</p>
+        <p>₹{summary.total_payroll}</p>
       </div>
 
       <div className="card">
         <h3>Net Balance</h3>
-        <p>₹0</p>
+        <p>₹{summary.net_balance}</p>
       </div>
 
       <div className="card">
         <h3>Burn Rate</h3>
-        <p>₹0</p>
+        <p>₹{burnRate}</p>
       </div>
 
     </div>

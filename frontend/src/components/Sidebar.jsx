@@ -1,14 +1,27 @@
 import "../App.css";
+import { useEffect, useState } from "react";
+import axios from "axios";
+
+const BASE_URL = "https://ai-payroll-expense-management.onrender.com";
 
 export default function Sidebar({ setPage }) {
+
+  const [balance, setBalance] = useState(0);
+
+  useEffect(() => {
+    axios.get(`${BASE_URL}/dashboard-summary/`)
+      .then(res => setBalance(res.data.net_balance))
+      .catch(err => console.error(err));
+  }, []);
+
   return (
     <div className="sidebar">
       <div>
         <h2 className="logoText">AI Payroll</h2>
 
-        {/* Balance Card */}
+        {/* Dynamic Balance Card */}
         <div className="balanceCard">
-          <h3>₹ 2,000</h3>
+          <h3>₹ {balance}</h3>
           <small>Balance</small>
         </div>
 
@@ -16,17 +29,11 @@ export default function Sidebar({ setPage }) {
         <ul className="menu">
           <li onClick={() => setPage("dashboard")}>🏠 Dashboard</li>
           <li onClick={() => setPage("addMember")}>➕ Add Member</li>
-          <li>📊 Insight</li>
-          <li>💳 Transaction</li>
-          <li>👤 Account</li>
-          <li>⚙ Settings</li>
+          <li onClick={() => setPage("employeeList")}>📋 Employee List</li>
         </ul>
       </div>
 
-      {/* Bottom Menu */}
       <div className="bottomMenu">
-        <div>➕ Add Account</div>
-        <div>🔄 Switch Account</div>
         <div>🚪 Log Out</div>
       </div>
     </div>
