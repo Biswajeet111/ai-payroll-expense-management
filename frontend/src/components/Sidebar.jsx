@@ -1,6 +1,6 @@
 import "../App.css";
 
-export default function Sidebar() {
+export default function Sidebar({ setPage }) {
   return (
     <div className="sidebar">
       <div>
@@ -14,7 +14,8 @@ export default function Sidebar() {
 
         {/* Menu */}
         <ul className="menu">
-          <li className="active">🏠 Dashboard</li>
+          <li onClick={() => setPage("dashboard")}>🏠 Dashboard</li>
+          <li onClick={() => setPage("addMember")}>➕ Add Member</li>
           <li>📊 Insight</li>
           <li>💳 Transaction</li>
           <li>👤 Account</li>
