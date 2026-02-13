@@ -9,20 +9,31 @@ export default function AIInsights() {
 
   useEffect(() => {
     axios.get(`${BASE_URL}/financial-health/`)
-      .then(res => setHealth(res.data))
-      .catch(err => console.error(err));
+      .then(res => setHealth(res.data));
 
     axios.get(`${BASE_URL}/burn-rate-alert/`)
-      .then(res => setBurn(res.data))
-      .catch(err => console.error(err));
+      .then(res => setBurn(res.data));
   }, []);
+
+  const getColor = (status) => {
+    if (status === "Healthy") return "green";
+    if (status === "Moderate") return "orange";
+    return "red";
+  };
 
   return (
     <div>
       {health && (
         <>
-          <h4>Financial Health: {health.financial_health_score}%</h4>
-          <p>Status: {health.status}</p>
+          <h4>
+            Financial Health:{" "}
+            <span style={{ color: getColor(health.status) }}>
+              {health.financial_health_score}%
+            </span>
+          </h4>
+          <p style={{ color: getColor(health.status) }}>
+            {health.status}
+          </p>
         </>
       )}
 

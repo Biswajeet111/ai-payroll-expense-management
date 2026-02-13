@@ -3,8 +3,7 @@ import axios from "axios";
 
 const BASE_URL = import.meta.env.VITE_API_URL;
 
-
-export default function AddEmployee() {
+export default function AddEmployee({ onSuccess }) {
 
   const [form, setForm] = useState({
     name: "",
@@ -31,7 +30,18 @@ export default function AddEmployee() {
       console.log("Success:", response.data);
 
       alert("Employee added successfully");
-      setForm({ name: "", base_salary: "", bonus: "", deductions: "" });
+
+      // ✅ Trigger dashboard refresh
+      if (onSuccess) {
+        onSuccess();
+      }
+
+      setForm({
+        name: "",
+        base_salary: "",
+        bonus: "",
+        deductions: ""
+      });
 
     } catch (error) {
       console.error("Add employee error:", error);

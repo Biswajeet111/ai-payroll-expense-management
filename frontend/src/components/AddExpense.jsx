@@ -3,8 +3,7 @@ import axios from "axios";
 
 const BASE_URL = import.meta.env.VITE_API_URL;
 
-
-export default function AddExpense() {
+export default function AddExpense({ onSuccess }) {
 
   const [form, setForm] = useState({
     title: "",
@@ -27,6 +26,12 @@ export default function AddExpense() {
       console.log("Expense Added:", response.data);
 
       alert("Expense added successfully");
+
+      // ✅ Trigger dashboard refresh
+      if (onSuccess) {
+        onSuccess();
+      }
+
       setForm({ title: "", amount: "" });
 
     } catch (err) {
