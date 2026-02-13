@@ -1,15 +1,25 @@
 from fastapi import FastAPI, Depends
 from sqlalchemy.orm import Session
 from database import engine, SessionLocal
-from models import Base, Employee, Expense 
-from models import Base, Employee
+from models import Base, Employee, Expense
 from pydantic import BaseModel
-from datetime import date
+from fastapi.middleware.cors import CORSMiddleware
 
-app = FastAPI()   
+app = FastAPI()   # ✅ FIRST DEFINE APP
+
+# ✅ CORS Middleware AFTER app creation
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 # Create tables
 Base.metadata.create_all(bind=engine)
 
+# Schemas
 class EmployeeCreate(BaseModel):
     name: str
     base_salary: int
@@ -21,12 +31,15 @@ class ExpenseCreate(BaseModel):
     amount: int
     category: str
 
+# DB Dependency
 def get_db():
     db = SessionLocal()
     try:
         yield db
     finally:
         db.close()
+
+# ---------------- CRUD APIs ----------------
 
 @app.post("/employees/")
 def create_employee(emp: EmployeeCreate, db: Session = Depends(get_db)):
@@ -35,6 +48,35 @@ def create_employee(emp: EmployeeCreate, db: Session = Depends(get_db)):
     db.commit()
     db.refresh(new_emp)
     return new_emp
+
+
+@app.get("/employees/")
+def get_employees(db: Session = Depends(get_db)):
+    return db.query(Employee).all()
+
+
+@app.put("/employees/{emp_id}")
+def update_employee(emp_id: int, emp: EmployeeCreate, db: Session = Depends(get_db)):
+    db_emp = db.query(Employee).filter(Employee.id == emp_id).first()
+    if db_emp:
+        db_emp.name = emp.name
+        db_emp.base_salary = emp.base_salary
+        db_emp.bonus = emp.bonus
+        db_emp.deductions = emp.deductions
+        db.commit()
+        return {"message": "Employee updated"}
+    return {"error": "Employee not found"}
+
+
+@app.delete("/employees/{emp_id}")
+def delete_employee(emp_id: int, db: Session = Depends(get_db)):
+    emp = db.query(Employee).filter(Employee.id == emp_id).first()
+    if emp:
+        db.delete(emp)
+        db.commit()
+        return {"message": "Employee deleted"}
+    return {"error": "Employee not found"}
+
 
 @app.post("/expenses/")
 def create_expense(exp: ExpenseCreate, db: Session = Depends(get_db)):
@@ -45,13 +87,20 @@ def create_expense(exp: ExpenseCreate, db: Session = Depends(get_db)):
     return new_exp
 
 
-@app.get("/employees/")
-def get_employees(db: Session = Depends(get_db)):
-    return db.query(Employee).all()
-
 @app.get("/expenses/")
 def get_expenses(db: Session = Depends(get_db)):
     return db.query(Expense).all()
+
+
+@app.delete("/expenses/{exp_id}")
+def delete_expense(exp_id: int, db: Session = Depends(get_db)):
+    exp = db.query(Expense).filter(Expense.id == exp_id).first()
+    if exp:
+        db.delete(exp)
+        db.commit()
+        return {"message": "Expense deleted"}
+    return {"error": "Expense not found"}
+
 
 @app.get("/dashboard-summary/")
 def dashboard_summary(db: Session = Depends(get_db)):
