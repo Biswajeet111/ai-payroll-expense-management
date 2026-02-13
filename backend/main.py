@@ -118,3 +118,32 @@ def dashboard_summary(db: Session = Depends(get_db)):
         "total_expenses": total_expenses,
         "net_balance": total_payroll - total_expenses
     }
+@app.get("/financial-health/")
+def financial_health(db: Session = Depends(get_db)):
+    employees = db.query(Employee).all()
+    expenses = db.query(Expense).all()
+
+    total_payroll = sum(
+        (e.base_salary + e.bonus - e.deductions) for e in employees
+    )
+
+    total_expenses = sum(exp.amount for exp in expenses)
+
+    net_balance = total_payroll - total_expenses
+
+    if total_payroll == 0:
+        score = 0
+    else:
+        score = round((net_balance / total_payroll) * 100)
+
+    if score > 70:
+        status = "Healthy"
+    elif score > 40:
+        status = "Moderate"
+    else:
+        status = "Risky"
+
+    return {
+        "financial_health_score": score,
+        "status": status
+    }
