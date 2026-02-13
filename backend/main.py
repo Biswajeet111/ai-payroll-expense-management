@@ -4,7 +4,7 @@ from database import engine, SessionLocal
 from models import Base, Employee, Expense
 from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
-
+from typing import Optional
 app = FastAPI()   
 
 @app.get("/")
@@ -35,7 +35,7 @@ class EmployeeCreate(BaseModel):
 class ExpenseCreate(BaseModel):
     title: str
     amount: int
-    category: str
+    category: Optional[str] = "General"
 
 # DB Dependency
 def get_db():
