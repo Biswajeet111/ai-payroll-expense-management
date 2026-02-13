@@ -1,30 +1,39 @@
-🚀 AI Payroll & Expense Management System
-An AI‑powered payroll and expense management platform built using FastAPI, PostgreSQL, and React.
-The system provides intelligent financial insights, burn‑rate monitoring, and real‑time payroll tracking.
+💼 AI Payroll & Expense Management System
+Intelligent Payroll Monitoring with Real‑Time Financial Insights
 
-🌟 Features
+A full‑stack AI‑powered payroll and expense management platform built using FastAPI, PostgreSQL, and React.
+The system provides automated salary calculations, financial analytics, and smart burn‑rate monitoring.
+
+🚀 Live Demo
+
+🔗 Backend API:
+
+📘 Swagger Docs:
+/docs
+
+✨ Key Features
 👨‍💼 Employee Management
-Add employees
+Add Employees
 
-View employee list
+View Employee List
 
-Delete employees
+Delete Employees
 
-Automatic ID generation
+Auto ID Generation
 
-Salary calculation (Base + Bonus − Deductions)
+Salary Calculation (Base + Bonus − Deductions)
 
 💸 Expense Management
-Add expenses
+Add Expenses
 
-View expense list
+Category Tracking
 
-Delete expenses
+Expense Deletion
 
-Category‑based tracking
+Real-Time Updates
 
-📊 Dashboard Analytics
-Total Payroll Calculation
+📊 Smart Dashboard
+Total Payroll
 
 Total Expenses
 
@@ -32,38 +41,49 @@ Net Balance
 
 Burn Rate Monitoring
 
+🤖 AI Insights Engine
 Financial Health Score
-
-🤖 AI Insights
-Financial Health Scoring System
 
 Burn Rate Risk Detection
 
-Smart Financial Alerts
+Intelligent Status Alerts
 
-🛠️ Tech Stack
-Backend
+🧠 AI Logic
+🔹 Financial Health Score
+Health Score = (Net Balance / Total Payroll) × 100
+Score	Status
+> 70	Healthy
+40–70	Moderate
+< 40	Risky
+🔹 Burn Rate Detection
+Burn Rate = (Total Expenses / Total Payroll) × 100
+Burn Rate	Alert Level
+< 40%	Stable
+40–70%	Monitor
+> 70%	High Risk
+🏗️ Tech Stack
+🔹 Backend
 FastAPI
-
-PostgreSQL
 
 SQLAlchemy
 
+PostgreSQL
+
 Uvicorn
 
-Deployed on Render
+Render Deployment
 
-Frontend
-React (Vite)
+🔹 Frontend
+React
 
 Axios
 
-CSS Styling
+CSS
 
-Database
-PostgreSQL (Hosted on Render)
+🔹 Database
+PostgreSQL (Cloud Hosted)
 
-🏗️ Project Architecture
+📂 Project Structure
 ai-payroll-expense-management/
 │
 ├── backend/
@@ -73,114 +93,56 @@ ai-payroll-expense-management/
 │   └── requirements.txt
 │
 ├── frontend/
-│   ├── src/components/
-│   └── src/pages/
+│   └── src/
 │
 └── README.md
-🚀 Live Deployment
-Backend (Render)
-https://ai-payroll-expense-management.onrender.com
-Swagger Docs:
-
-/docs
-⚙️ Backend Setup (Local)
-1️⃣ Clone Repository
-git clone https://github.com/your-username/ai-payroll-expense-management.git
-cd ai-payroll-expense-management/backend
-2️⃣ Create Virtual Environment
+⚙️ Local Setup
+Backend
+cd backend
 python -m venv venv
-venv\Scripts\activate   # Windows
-3️⃣ Install Dependencies
+venv\Scripts\activate
 pip install -r requirements.txt
-4️⃣ Run Server
 uvicorn main:app --reload
-Server runs on:
+Runs at:
 
 http://127.0.0.1:8000
-⚙️ Frontend Setup
+Frontend
 cd frontend
 npm install
 npm run dev
-Make sure API base URL is updated to:
+Make sure API base URL is:
 
 const BASE_URL = "https://ai-payroll-expense-management.onrender.com";
-🧠 AI Logic Overview
-Financial Health Score
-health_score = (net_balance / total_payroll) * 100
-Status:
-
-70 → Healthy
-
-40–70 → Moderate
-
-<40 → Risky
-
-Burn Rate Alert
-burn_rate = (total_expenses / total_payroll) * 100
-Alert Types:
-
-70% → High Risk
-
-40–70% → Monitor
-
-<40% → Stable
-
-📈 API Endpoints
-Employees
-POST /employees/
-
-GET /employees/
-
-PUT /employees/{id}
-
-DELETE /employees/{id}
-
-Expenses
-POST /expenses/
-
-GET /expenses/
-
-DELETE /expenses/{id}
-
-Analytics
-GET /dashboard-summary/
-
-GET /financial-health/
-
-GET /burn-rate-alert/
-
-🔒 Environment Variables
-For deployment:
-
-DATABASE_URL=your_postgresql_url
-🎯 Hackathon Demo Flow
+🔐 Environment Variable (Production)
+DATABASE_URL=your_render_postgres_url
+🎯 Demo Flow (Hackathon Ready)
 Add Employee
 
 Add Expense
 
-View Dashboard auto updates
+Dashboard Auto Updates
 
-Check Financial Health Score
+View AI Financial Health
 
-Observe Burn Rate Alert
+Monitor Burn Rate Alert
 
-Delete employee → real‑time update
+Delete Employee → Live Refresh
 
-📌 Future Enhancements
-Authentication System
+🔮 Future Enhancements
+Role‑Based Authentication
 
-Role‑based Access (Admin / Employee)
+ML‑Based Expense Forecasting
 
-Expense Category AI Prediction
+Category Auto‑Prediction
 
-ML‑based Expense Forecasting
+Advanced Data Visualizations
 
-Real‑time Charts Integration
+PDF Salary Reports
 
-👨‍💻 Contributors
+👨‍💻 Developed By
 Biswajeet Kumar
+AI Payroll Team
 
-Yash Raj
-
-📜 License
-This project is built for educational and hackathon purposes.
+📌 Project Type
+Hackathon / Portfolio Project
+Production‑Ready Deployment
