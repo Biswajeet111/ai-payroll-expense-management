@@ -3,6 +3,9 @@ import AddEmployee from "./AddEmployee";
 import EmployeeList from "./EmployeeList";
 import AddExpense from "./AddExpense";
 import ExpenseList from "./ExpenseList";
+import ExpenseChart from "./ExpenseChart";
+import AIInsights from "./AIInsights";
+
 
 import { useEffect, useState } from "react";
 import axios from "axios";
@@ -80,13 +83,15 @@ const BASE_URL = import.meta.env.VITE_API_URL;
               marginTop: "20px",
               flexWrap: "wrap"
             }}>
-              <div className="card" style={{flex: "2 1 500px", height:"250px"}}>
-                Expense Chart (Coming Soon)
-              </div>
+              <div className="card" style={{flex: "2 1 500px"}}>
+              <h3>Expense Chart</h3>
+              <ExpenseChart />
+            </div>
 
-              <div className="card" style={{flex: "1 1 300px", height:"250px"}}>
-                AI Insights (Coming Soon)
-              </div>
+            <div className="card" style={{flex: "1 1 300px"}}>
+              <h3>AI Insights</h3>
+              <AIInsights />
+            </div>
             </div>
           </>
         )}
