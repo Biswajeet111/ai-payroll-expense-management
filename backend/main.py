@@ -5,6 +5,8 @@ from models import Base, Employee, Expense
 from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
 from typing import Optional
+from fastapi import HTTPException
+
 app = FastAPI()   
 
 @app.get("/")
@@ -23,7 +25,9 @@ app.add_middleware(
 )
 
 # Create tables
-Base.metadata.create_all(bind=engine)
+@app.on_event("startup")
+def startup():
+    Base.metadata.create_all(bind=engine)
 
 # Schemas
 class EmployeeCreate(BaseModel):
