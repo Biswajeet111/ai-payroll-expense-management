@@ -147,3 +147,33 @@ def financial_health(db: Session = Depends(get_db)):
         "financial_health_score": score,
         "status": status
     }
+@app.get("/burn-rate-alert/")
+def burn_rate_alert(db: Session = Depends(get_db)):
+    employees = db.query(Employee).all()
+    expenses = db.query(Expense).all()
+
+    total_payroll = sum(
+        (e.base_salary + e.bonus - e.deductions) for e in employees
+    )
+
+    total_expenses = sum(exp.amount for exp in expenses)
+
+    if total_payroll == 0:
+        return {
+            "burn_rate_percentage": 0,
+            "alert": "No payroll data available"
+        }
+
+    burn_rate = round((total_expenses / total_payroll) * 100)
+
+    if burn_rate > 70:
+        alert = "High Risk: Expenses are very high compared to payroll"
+    elif burn_rate > 40:
+        alert = "Moderate: Monitor expense growth"
+    else:
+        alert = "Stable: Financial condition under control"
+
+    return {
+        "burn_rate_percentage": burn_rate,
+        "alert": alert
+    }
