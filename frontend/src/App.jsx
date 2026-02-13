@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import axios from "axios";
+import Dashboard from "./components/Dashboard";
 
 function App() {
 
@@ -9,11 +10,7 @@ function App() {
       .catch(err => console.error(err));
   }, []);
 
-  return (
-    <div>
-      <h1>AI Payroll Dashboard</h1>
-    </div>
-  );
+  return <Dashboard />;
 }
 
 export default App;
