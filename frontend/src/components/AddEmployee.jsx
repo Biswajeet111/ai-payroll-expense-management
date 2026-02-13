@@ -20,18 +20,20 @@ export default function AddEmployee() {
     e.preventDefault();
 
     try {
-      await axios.post(`${BASE_URL}/employees/`, {
+      const response = await axios.post(`${BASE_URL}/employees/`, {
         name: form.name,
-        base_salary: Number(form.base_salary),
-        bonus: Number(form.bonus),
-        deductions: Number(form.deductions)
+        base_salary: Number(form.base_salary) || 0,
+        bonus: Number(form.bonus) || 0,
+        deductions: Number(form.deductions) || 0
       });
+
+      console.log("Success:", response.data);
 
       alert("Employee added successfully");
       setForm({ name: "", base_salary: "", bonus: "", deductions: "" });
 
     } catch (error) {
-      console.error(error);
+      console.error("Add employee error:", error);
       alert("Error adding employee");
     }
   };
@@ -41,10 +43,38 @@ export default function AddEmployee() {
       <h3>Add Employee</h3>
 
       <form onSubmit={handleSubmit}>
-        <input name="name" placeholder="Name" value={form.name} onChange={handleChange} required /><br /><br />
-        <input name="base_salary" placeholder="Base Salary" value={form.base_salary} onChange={handleChange} required /><br /><br />
-        <input name="bonus" placeholder="Bonus" value={form.bonus} onChange={handleChange} required /><br /><br />
-        <input name="deductions" placeholder="Deductions" value={form.deductions} onChange={handleChange} required /><br /><br />
+        <input
+          name="name"
+          placeholder="Name"
+          value={form.name}
+          onChange={handleChange}
+          required
+        /><br /><br />
+
+        <input
+          type="number"
+          name="base_salary"
+          placeholder="Base Salary"
+          value={form.base_salary}
+          onChange={handleChange}
+          required
+        /><br /><br />
+
+        <input
+          type="number"
+          name="bonus"
+          placeholder="Bonus"
+          value={form.bonus}
+          onChange={handleChange}
+        /><br /><br />
+
+        <input
+          type="number"
+          name="deductions"
+          placeholder="Deductions"
+          value={form.deductions}
+          onChange={handleChange}
+        /><br /><br />
 
         <button type="submit">Add Employee</button>
       </form>

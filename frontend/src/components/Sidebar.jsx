@@ -30,6 +30,8 @@ export default function Sidebar({ setPage }) {
           <li onClick={() => setPage("dashboard")}>🏠 Dashboard</li>
           <li onClick={() => setPage("addMember")}>➕ Add Member</li>
           <li onClick={() => setPage("employeeList")}>📋 Employee List</li>
+          <li onClick={() => setPage("addExpense")}>💸 Add Expense</li>
+          <li onClick={() => setPage("expenseList")}>📑 Expense List</li>
         </ul>
       </div>
 

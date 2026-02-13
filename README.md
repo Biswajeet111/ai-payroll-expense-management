@@ -123,4 +123,3 @@ Delete employee → instant refresh
 
 👨‍💻 Team
 Biswajeet Kumar
-AI Payroll Team

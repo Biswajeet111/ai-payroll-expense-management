@@ -5,12 +5,18 @@ from models import Base, Employee, Expense
 from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
 
-app = FastAPI()   # ✅ FIRST DEFINE APP
+app = FastAPI()   
+
+@app.get("/")
+def root():
+    return {"message": "AI Payroll API Running Successfully"}
 
 # ✅ CORS Middleware AFTER app creation
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=[
+    "http://localhost:5173",  
+    "https://ai-payroll-expense-management.vercel.app"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

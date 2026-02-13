@@ -1,12 +1,15 @@
 import Sidebar from "./Sidebar";
 import AddEmployee from "./AddEmployee";
 import EmployeeList from "./EmployeeList";
+import AddExpense from "./AddExpense";
+import ExpenseList from "./ExpenseList";
+
 import { useEffect, useState } from "react";
 import axios from "axios";
 
 export default function Dashboard() {
 
-  const [page, setPage] = useState("dashboard");   // 👈 page state
+  const [page, setPage] = useState("dashboard");
 
   const [summary, setSummary] = useState({
     total_payroll: 0,
@@ -16,15 +19,21 @@ export default function Dashboard() {
 
   const BASE_URL = "https://ai-payroll-expense-management.onrender.com";
 
-useEffect(() => {
-  axios.get(`${BASE_URL}/dashboard-summary/`)
-    .then(res => setSummary(res.data))
-    .catch(err => console.error(err));
-}, []);
+  const fetchSummary = () => {
+    axios.get(`${BASE_URL}/dashboard-summary/`)
+      .then(res => setSummary(res.data))
+      .catch(err => console.error(err));
+  };
 
+  useEffect(() => {
+    fetchSummary();
+  }, []);
 
-
-  const burnRate = summary.total_expenses;
+  // ✅ Proper Burn Rate %
+  const burnRate =
+    summary.total_payroll === 0
+      ? 0
+      : Math.round((summary.total_expenses / summary.total_payroll) * 100);
 
   return (
     <div style={{
@@ -33,12 +42,10 @@ useEffect(() => {
       minHeight: "100vh"
     }}>
 
-      {/* Sidebar ko function pass kar rahe */}
       <Sidebar setPage={setPage} />
 
       <div style={{flex: 1, padding: "20px", color: "black"}}>
-        
-        {/* Dashboard View */}
+
         {page === "dashboard" && (
           <>
             <h2>Dashboard</h2>
@@ -49,10 +56,21 @@ useEffect(() => {
               marginTop: "20px",
               flexWrap: "wrap"
             }}>
-              <div className="card">Total Expenses: ₹ {summary.total_expenses}</div>
-              <div className="card">Total Payroll: ₹ {summary.total_payroll}</div>
-              <div className="card">Net Balance: ₹ {summary.net_balance}</div>
-              <div className="card">Burn Rate: ₹ {burnRate}</div>
+              <div className="card">
+                Total Expenses: ₹ {summary.total_expenses}
+              </div>
+
+              <div className="card">
+                Total Payroll: ₹ {summary.total_payroll}
+              </div>
+
+              <div className="card">
+                Net Balance: ₹ {summary.net_balance}
+              </div>
+
+              <div className="card">
+                Burn Rate: {burnRate}%
+              </div>
             </div>
 
             <div style={{
@@ -72,21 +90,10 @@ useEffect(() => {
           </>
         )}
 
-        {/* Add Member View */}
-        {page === "addMember" && (
-          <>
-            <h2>Add Member</h2>
-            <AddEmployee />
-          </>
-        )}
-
-        {/* Employee List View */}
-        {page === "employeeList" && (
-          <>
-            <h2>Employee List</h2>
-            <EmployeeList />
-          </>
-        )}
+        {page === "addMember" && <AddEmployee />}
+        {page === "employeeList" && <EmployeeList />}
+        {page === "addExpense" && <AddExpense />}
+        {page === "expenseList" && <ExpenseList />}
 
       </div>
     </div>

@@ -4,12 +4,13 @@ import axios from "axios";
 const BASE_URL = "https://ai-payroll-expense-management.onrender.com";
 
 export default function EmployeeList() {
+
   const [employees, setEmployees] = useState([]);
 
   const fetchEmployees = () => {
     axios.get(`${BASE_URL}/employees/`)
       .then(res => setEmployees(res.data))
-      .catch(err => console.error(err));
+      .catch(err => console.error("Employee fetch error:", err));
   };
 
   useEffect(() => {
@@ -19,9 +20,9 @@ export default function EmployeeList() {
   const deleteEmployee = async (id) => {
     try {
       await axios.delete(`${BASE_URL}/employees/${id}`);
-      fetchEmployees(); // refresh list
+      fetchEmployees(); // refresh after delete
     } catch (error) {
-      console.error(error);
+      console.error("Delete error:", error);
       alert("Delete failed");
     }
   };
@@ -30,17 +31,25 @@ export default function EmployeeList() {
     <div className="card" style={{ marginTop: "20px" }}>
       <h3>Employees</h3>
 
+      {employees.length === 0 && <p>No employees found</p>}
+
       {employees.map(emp => (
-        <div key={emp.id} style={{
-          display: "flex",
-          justifyContent: "space-between",
-          marginBottom: "10px"
-        }}>
+        <div
+          key={emp.id}
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            marginBottom: "10px"
+          }}
+        >
           <span>
             {emp.name} — ₹ {emp.base_salary}
           </span>
 
-          <button onClick={() => deleteEmployee(emp.id)}>
+          <button
+            style={{ background: "red", color: "white", border: "none", padding: "5px 10px" }}
+            onClick={() => deleteEmployee(emp.id)}
+          >
             Delete
           </button>
         </div>
