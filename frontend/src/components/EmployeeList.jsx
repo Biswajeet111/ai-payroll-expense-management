@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-const BASE_URL = "https://ai-payroll-expense-management.onrender.com";
+const BASE_URL = import.meta.env.VITE_API_URL;
+
 
 export default function EmployeeList() {
 

@@ -17,7 +17,8 @@ export default function Dashboard() {
     net_balance: 0
   });
 
-  const BASE_URL = "https://ai-payroll-expense-management.onrender.com";
+const BASE_URL = import.meta.env.VITE_API_URL;
+
 
   const fetchSummary = () => {
     axios.get(`${BASE_URL}/dashboard-summary/`)
