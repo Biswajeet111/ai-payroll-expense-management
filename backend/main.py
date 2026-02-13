@@ -18,7 +18,7 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=[
     "http://localhost:5173",
-    "https://ai-payroll-expense-management-flax.vercel.app"],
+    "https://ai-payroll-expense-management-5dumfaatp.vercel.app"],
 
     allow_credentials=True,
     allow_methods=["*"],
