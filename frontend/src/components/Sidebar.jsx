@@ -23,7 +23,7 @@ export default function Sidebar({ page, setPage }) {
     <aside className="sidebar">
       <div>
         <h2 className="sidebar-logo">AI PAYROLL</h2>
-        <h2 className="sidebar-logo">Developed by Silent Syntex</h2>
+        <h6 className="sidebar-logo">Developed by Silent Syntex</h6>
 
 
         <div className="sidebar-balance">
