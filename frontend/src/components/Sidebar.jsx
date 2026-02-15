@@ -4,41 +4,50 @@ import axios from "axios";
 
 const BASE_URL = import.meta.env.VITE_API_URL;
 
+const navItems = [
+  { id: "dashboard", label: "Dashboard", icon: "◉" },
+  { id: "addMember", label: "Add Member", icon: "＋" },
+  { id: "employeeList", label: "Employee List", icon: "☰" },
+  { id: "addExpense", label: "Add Expense", icon: "₹" },
+  { id: "expenseList", label: "Expense List", icon: "≡" },
+];
 
-export default function Sidebar({ setPage }) {
-
+export default function Sidebar({ page, setPage }) {
   const [balance, setBalance] = useState(0);
 
   useEffect(() => {
-    axios.get(`${BASE_URL}/dashboard-summary/`)
-      .then(res => setBalance(res.data.net_balance))
-      .catch(err => console.error(err));
+    axios.get(`${BASE_URL}/dashboard-summary/`).then((res) => setBalance(res.data.net_balance)).catch((err) => console.error(err));
   }, []);
 
   return (
-    <div className="sidebar">
+    <aside className="sidebar">
       <div>
-        <h2 className="logoText">AI Payroll</h2>
+        <h2 className="sidebar-logo">AI Payroll</h2>
 
-        {/* Dynamic Balance Card */}
-        <div className="balanceCard">
-          <h3>₹ {balance}</h3>
-          <small>Balance</small>
+        <div className="sidebar-balance">
+          <div className="sidebar-balance-value">₹ {balance?.toLocaleString?.() ?? balance}</div>
+          <div className="sidebar-balance-label">Net Balance</div>
         </div>
 
-        {/* Menu */}
-        <ul className="menu">
-          <li onClick={() => setPage("dashboard")}>🏠 Dashboard</li>
-          <li onClick={() => setPage("addMember")}>➕ Add Member</li>
-          <li onClick={() => setPage("employeeList")}>📋 Employee List</li>
-          <li onClick={() => setPage("addExpense")}>💸 Add Expense</li>
-          <li onClick={() => setPage("expenseList")}>📑 Expense List</li>
+        <ul className="sidebar-nav">
+          {navItems.map((item) => (
+            <li
+              key={item.id}
+              className={`sidebar-nav-item ${page === item.id ? "active" : ""}`}
+              onClick={() => setPage(item.id)}
+            >
+              <span className="sidebar-nav-icon">{item.icon}</span>
+              {item.label}
+            </li>
+          ))}
         </ul>
       </div>
 
-      <div className="bottomMenu">
-        <div>🚪 Log Out</div>
+      <div className="sidebar-footer">
+        <div className="sidebar-footer-item">
+          <span>⎋</span> Log out
+        </div>
       </div>
-    </div>
+    </aside>
   );
 }

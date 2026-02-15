@@ -1,17 +1,18 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import "../App.css";
 
 const BASE_URL = import.meta.env.VITE_API_URL;
 
+function salary(emp) {
+  return (emp.base_salary || 0) + (emp.bonus || 0) - (emp.deductions || 0);
+}
 
 export default function EmployeeList() {
-
   const [employees, setEmployees] = useState([]);
 
   const fetchEmployees = () => {
-    axios.get(`${BASE_URL}/employees/`)
-      .then(res => setEmployees(res.data))
-      .catch(err => console.error("Employee fetch error:", err));
+    axios.get(`${BASE_URL}/employees/`).then((res) => setEmployees(res.data)).catch((err) => console.error(err));
   };
 
   useEffect(() => {
@@ -19,38 +20,36 @@ export default function EmployeeList() {
   }, []);
 
   const deleteEmployee = async (id) => {
+    if (!confirm("Remove this employee?")) return;
     try {
       await axios.delete(`${BASE_URL}/employees/${id}`);
-      fetchEmployees(); // refresh after delete
-    } catch (error) {
-      console.error("Delete error:", error);
+      fetchEmployees();
+    } catch (err) {
+      console.error(err);
       alert("Delete failed");
     }
   };
 
   return (
-    <div className="card" style={{ marginTop: "20px" }}>
-      <h3>Employees</h3>
+    <div className="card list-card">
+      <div className="list-header">
+        <h3 style={{ margin: 0, fontSize: "1.1rem" }}>Employees</h3>
+      </div>
 
-      {employees.length === 0 && <p>No employees found</p>}
+      {employees.length === 0 && <div className="list-empty">No employees yet. Add one from the sidebar.</div>}
 
-      {employees.map(emp => (
-        <div
-          key={emp.id}
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            marginBottom: "10px"
-          }}
-        >
-          <span>
-            {emp.name} — ₹ {emp.base_salary}
-          </span>
-
-          <button
-            style={{ background: "red", color: "white", border: "none", padding: "5px 10px" }}
-            onClick={() => deleteEmployee(emp.id)}
-          >
+      {employees.map((emp) => (
+        <div key={emp.id} className="list-item">
+          <div>
+            <div className="list-item-info">{emp.name}</div>
+            <div className="list-item-meta">
+              Base ₹{emp.base_salary?.toLocaleString?.() ?? emp.base_salary}
+              {emp.bonus ? ` + ₹${emp.bonus} bonus` : ""}
+              {emp.deductions ? ` − ₹${emp.deductions} deductions` : ""}
+              → Net ₹{salary(emp)?.toLocaleString?.() ?? salary(emp)}
+            </div>
+          </div>
+          <button className="btn btn-danger" onClick={() => deleteEmployee(emp.id)}>
             Delete
           </button>
         </div>

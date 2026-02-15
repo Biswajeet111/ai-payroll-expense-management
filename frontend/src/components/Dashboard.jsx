@@ -1,3 +1,4 @@
+import "../App.css";
 import Sidebar from "./Sidebar";
 import AddEmployee from "./AddEmployee";
 import EmployeeList from "./EmployeeList";
@@ -10,131 +11,107 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 
 export default function Dashboard() {
-
   const [page, setPage] = useState("dashboard");
   const [refreshKey, setRefreshKey] = useState(0);
 
   const [summary, setSummary] = useState({
     total_payroll: 0,
     total_expenses: 0,
-    net_balance: 0
+    net_balance: 0,
   });
 
   const BASE_URL = import.meta.env.VITE_API_URL;
 
   const fetchSummary = () => {
-    axios.get(`${BASE_URL}/dashboard-summary/`)
-      .then(res => setSummary(res.data))
-      .catch(err => console.error(err));
+    axios.get(`${BASE_URL}/dashboard-summary/`).then((res) => setSummary(res.data)).catch((err) => console.error(err));
   };
 
   useEffect(() => {
     fetchSummary();
-  }, [refreshKey]); // auto refresh when key changes
+  }, [refreshKey]);
 
-  // ✅ Proper Burn Rate %
   const burnRate =
-    summary.total_payroll === 0
-      ? 0
-      : Math.round((summary.total_expenses / summary.total_payroll) * 100);
+    summary.total_payroll === 0 ? 0 : Math.round((summary.total_expenses / summary.total_payroll) * 100);
 
-  const getBurnColor = () => {
-    if (burnRate > 70) return "red";
-    if (burnRate > 40) return "orange";
-    return "green";
+  const getBurnClass = () => {
+    if (burnRate > 70) return "danger";
+    if (burnRate > 40) return "warn";
+    return "success";
   };
 
-  const getBalanceColor = () => {
-    return summary.net_balance >= 0 ? "green" : "red";
-  };
+  const getBalanceClass = () => (summary.net_balance >= 0 ? "success" : "danger");
 
   return (
-    <div style={{
-      display: "flex",
-      background: "#f5f6fa",
-      minHeight: "100vh"
-    }}>
+    <div className="app-layout">
+      <Sidebar page={page} setPage={setPage} />
 
-      <Sidebar setPage={setPage} />
-
-      <div style={{ flex: 1, padding: "20px", color: "black" }}>
-
+      <main className="main-content">
         {page === "dashboard" && (
           <>
-            <h2>Dashboard</h2>
+            <h1 className="page-title">Dashboard</h1>
 
-            {/* Summary Cards */}
-            <div style={{
-              display: "flex",
-              gap: "20px",
-              marginTop: "20px",
-              flexWrap: "wrap"
-            }}>
-
-              <div className="card">
-                <h4>Total Expenses</h4>
-                <p>₹ {summary.total_expenses}</p>
+            <div className="stats-grid">
+              <div className="stat-card">
+                <div className="card-title">Total Expenses</div>
+                <div className="card-value">₹ {summary.total_expenses?.toLocaleString?.() ?? summary.total_expenses}</div>
               </div>
-
-              <div className="card">
-                <h4>Total Payroll</h4>
-                <p>₹ {summary.total_payroll}</p>
+              <div className="stat-card">
+                <div className="card-title">Total Payroll</div>
+                <div className="card-value">₹ {summary.total_payroll?.toLocaleString?.() ?? summary.total_payroll}</div>
               </div>
-
-              <div className="card">
-                <h4>Net Balance</h4>
-                <p style={{ color: getBalanceColor(), fontWeight: "bold" }}>
-                  ₹ {summary.net_balance}
-                </p>
+              <div className="stat-card">
+                <div className="card-title">Net Balance</div>
+                <div className={`card-value ${getBalanceClass()}`}>
+                  ₹ {summary.net_balance?.toLocaleString?.() ?? summary.net_balance}
+                </div>
               </div>
-
-              <div className="card">
-                <h4>Burn Rate</h4>
-                <p style={{ color: getBurnColor(), fontWeight: "bold" }}>
-                  {burnRate}%
-                </p>
+              <div className="stat-card">
+                <div className="card-title">Burn Rate</div>
+                <div className={`card-value ${getBurnClass()}`}>{burnRate}%</div>
               </div>
             </div>
 
-            {/* Charts + AI */}
-            <div style={{
-              display: "flex",
-              gap: "20px",
-              marginTop: "20px",
-              flexWrap: "wrap"
-            }}>
-
-              <div className="card" style={{ flex: "2 1 500px" }}>
-                <h3>Expense Chart</h3>
+            <div className="dashboard-grid">
+              <div className="card chart-wrap">
+                <h3 className="card-title" style={{ marginBottom: 16 }}>Expense breakdown</h3>
                 <ExpenseChart key={refreshKey} />
               </div>
-
-              <div className="card" style={{ flex: "1 1 300px" }}>
-                <h3>AI Insights</h3>
+              <div className="card">
+                <h3 className="card-title" style={{ marginBottom: 16 }}>AI Insights</h3>
                 <AIInsights key={refreshKey} />
               </div>
-
             </div>
           </>
         )}
 
-        {page === "addMember" && 
-          <AddEmployee onSuccess={() => setRefreshKey(prev => prev + 1)} />
-        }
+        {page === "addMember" && (
+          <>
+            <h1 className="page-title">Add Member</h1>
+            <AddEmployee onSuccess={() => setRefreshKey((prev) => prev + 1)} />
+          </>
+        )}
 
-        {page === "employeeList" && 
-          <EmployeeList onSuccess={() => setRefreshKey(prev => prev + 1)} />
-        }
+        {page === "employeeList" && (
+          <>
+            <h1 className="page-title">Employee List</h1>
+            <EmployeeList onSuccess={() => setRefreshKey((prev) => prev + 1)} />
+          </>
+        )}
 
-        {page === "addExpense" && 
-          <AddExpense onSuccess={() => setRefreshKey(prev => prev + 1)} />
-        }
+        {page === "addExpense" && (
+          <>
+            <h1 className="page-title">Add Expense</h1>
+            <AddExpense onSuccess={() => setRefreshKey((prev) => prev + 1)} />
+          </>
+        )}
 
-        {page === "expenseList" && 
-          <ExpenseList onSuccess={() => setRefreshKey(prev => prev + 1)} />
-        }
-
-      </div>
+        {page === "expenseList" && (
+          <>
+            <h1 className="page-title">Expense List</h1>
+            <ExpenseList onSuccess={() => setRefreshKey((prev) => prev + 1)} />
+          </>
+        )}
+      </main>
     </div>
   );
 }
