@@ -22,7 +22,9 @@ export default function Sidebar({ page, setPage }) {
   return (
     <aside className="sidebar">
       <div>
-        <h2 className="sidebar-logo">AI Payroll</h2>
+        <h2 className="sidebar-logo">AI PAYROLL</h2>
+        <h2 className="sidebar-logo">Developed by Silent Syntex</h2>
+
 
         <div className="sidebar-balance">
           <div className="sidebar-balance-value">₹ {balance?.toLocaleString?.() ?? balance}</div>
