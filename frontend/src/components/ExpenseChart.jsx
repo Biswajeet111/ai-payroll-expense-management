@@ -13,7 +13,7 @@ import {
 
 const BASE_URL = import.meta.env.VITE_API_URL;
 
-const CHART_COLORS = ["#f59e0b", "#0ea5e9", "#8b5cf6", "#10b981", "#f43f5e", "#64748b"];
+const CHART_COLORS = ["#1E3A8A", "#10B981", "#f59e0b", "#6366f1", "#ef4444", "#64748b"];
 
 export default function ExpenseChart() {
   const [data, setData] = useState([]);
@@ -52,7 +52,7 @@ export default function ExpenseChart() {
         }}
       >
         <div style={{ fontWeight: 600 }}>{d.fullName ?? d.name}</div>
-        <div style={{ color: "var(--accent)", fontWeight: 600 }}>₹ {d.amount?.toLocaleString?.() ?? d.amount}</div>
+        <div style={{ color: "var(--primary)", fontWeight: 600 }}>₹ {d.amount?.toLocaleString?.() ?? d.amount}</div>
       </div>
     );
   };
@@ -74,7 +74,7 @@ export default function ExpenseChart() {
             tickLine={false}
             tickFormatter={(v) => `₹${v}`}
           />
-          <Tooltip content={<CustomTooltip />} cursor={{ fill: "var(--accent-soft)" }} />
+          <Tooltip content={<CustomTooltip />} cursor={{ fill: "rgba(16, 185, 129, 0.08)" }} />
           <Bar dataKey="amount" radius={[6, 6, 0, 0]} maxBarSize={48}>
             {data.map((entry, index) => (
               <Cell key={`cell-${index}`} fill={entry.fill} />

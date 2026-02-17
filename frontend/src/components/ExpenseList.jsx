@@ -4,7 +4,7 @@ import "../App.css";
 
 const BASE_URL = import.meta.env.VITE_API_URL;
 
-export default function ExpenseList() {
+export default function ExpenseList({ onSuccess }) {
   const [expenses, setExpenses] = useState([]);
 
   const fetchExpenses = () => {
@@ -20,6 +20,7 @@ export default function ExpenseList() {
     try {
       await axios.delete(`${BASE_URL}/expenses/${id}`);
       fetchExpenses();
+      onSuccess?.();
     } catch (err) {
       console.error(err);
       alert("Delete failed");

@@ -10,14 +10,31 @@ function getHealthClass(status) {
   return "risky";
 }
 
-export default function AIInsights() {
+export default function AIInsights({ refreshKey }) {
   const [health, setHealth] = useState(null);
   const [burn, setBurn] = useState(null);
+  const [anomalies, setAnomalies] = useState(null);
+  const [prediction, setPrediction] = useState(null);
 
   useEffect(() => {
-    axios.get(`${BASE_URL}/financial-health/`).then((res) => setHealth(res.data));
-    axios.get(`${BASE_URL}/burn-rate-alert/`).then((res) => setBurn(res.data));
-  }, []);
+    const fetchAll = async () => {
+      try {
+        const [healthRes, burnRes, anomaliesRes, predictionRes] = await Promise.all([
+          axios.get(`${BASE_URL}/financial-health/`),
+          axios.get(`${BASE_URL}/burn-rate-alert/`),
+          axios.get(`${BASE_URL}/expense-anomalies/`),
+          axios.get(`${BASE_URL}/cashflow-prediction/`),
+        ]);
+        setHealth(healthRes.data);
+        setBurn(burnRes.data);
+        setAnomalies(anomaliesRes.data);
+        setPrediction(predictionRes.data);
+      } catch (err) {
+        console.error("AI Insights fetch error:", err);
+      }
+    };
+    fetchAll();
+  }, [refreshKey ?? 0]);
 
   return (
     <div className="insights-panel">
@@ -34,6 +51,29 @@ export default function AIInsights() {
           <div className="insight-label">Burn rate</div>
           <div className="insight-value">{burn.burn_rate_percentage}%</div>
           <div className="insight-status">{burn.alert}</div>
+        </div>
+      )}
+
+      {prediction && (
+        <div className="insight-block">
+          <div className="insight-label">Cashflow prediction</div>
+          <div className="insight-value">
+            ₹ {Number(prediction.predicted_next_month_balance ?? 0).toLocaleString()}
+          </div>
+          <div className="insight-status">Predicted next month balance</div>
+        </div>
+      )}
+
+      {anomalies?.anomalies?.length > 0 && (
+        <div className="insight-block insight-block-anomaly">
+          <div className="insight-label">Unusual expenses</div>
+          <ul className="anomaly-list">
+            {anomalies.anomalies.map((item, i) => (
+              <li key={i}>
+                {item.title} – ₹ {item.amount?.toLocaleString() ?? item.amount}
+              </li>
+            ))}
+          </ul>
         </div>
       )}
 

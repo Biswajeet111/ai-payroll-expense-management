@@ -2,12 +2,12 @@ import { useEffect } from "react";
 import axios from "axios";
 import Dashboard from "./components/Dashboard";
 
-function App() {
+const API_URL = import.meta.env.VITE_API_URL;
 
+function App() {
   useEffect(() => {
-    axios.get("http://127.0.0.1:8000/")
-      .then(res => console.log(res.data))
-      .catch(err => console.error(err));
+    if (!API_URL) return;
+    axios.get(`${API_URL}/`).catch(() => {});
   }, []);
 
   return <Dashboard />;

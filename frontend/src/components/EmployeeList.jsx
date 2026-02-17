@@ -8,7 +8,7 @@ function salary(emp) {
   return (emp.base_salary || 0) + (emp.bonus || 0) - (emp.deductions || 0);
 }
 
-export default function EmployeeList() {
+export default function EmployeeList({ onSuccess }) {
   const [employees, setEmployees] = useState([]);
 
   const fetchEmployees = () => {
@@ -24,6 +24,7 @@ export default function EmployeeList() {
     try {
       await axios.delete(`${BASE_URL}/employees/${id}`);
       fetchEmployees();
+      onSuccess?.();
     } catch (err) {
       console.error(err);
       alert("Delete failed");

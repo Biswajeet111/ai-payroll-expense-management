@@ -5,26 +5,29 @@ import axios from "axios";
 const BASE_URL = import.meta.env.VITE_API_URL;
 
 const navItems = [
-  { id: "dashboard", label: "Dashboard", icon: "◉" },
-  { id: "addMember", label: "Add Member", icon: "＋" },
-  { id: "employeeList", label: "Employee List", icon: "☰" },
+  { id: "dashboard", label: "Dashboard", icon: "◇" },
+  { id: "addMember", label: "Add Member", icon: "+" },
+  { id: "employeeList", label: "Employee List", icon: "≡" },
   { id: "addExpense", label: "Add Expense", icon: "₹" },
-  { id: "expenseList", label: "Expense List", icon: "≡" },
+  { id: "expenseList", label: "Expense List", icon: "▪" },
 ];
 
-export default function Sidebar({ page, setPage }) {
+export default function Sidebar({ page, setPage, refreshKey }) {
   const [balance, setBalance] = useState(0);
 
   useEffect(() => {
-    axios.get(`${BASE_URL}/dashboard-summary/`).then((res) => setBalance(res.data.net_balance)).catch((err) => console.error(err));
-  }, []);
+    axios.get(`${BASE_URL}/dashboard-summary/`).then((res) => setBalance(res.data.net_balance)).catch(() => {});
+  }, [refreshKey ?? 0]);
 
   return (
     <aside className="sidebar">
       <div>
-        <h2 className="sidebar-logo">AI PAYROLL</h2>
-        <h6 className="sidebar-logo">Developed by Silent Syntex</h6>
-
+        <div className="sidebar-logo-section">
+          <h2 className="sidebar-logo">
+            <span className="sidebar-logo-icon">₹</span>
+            <span>AI Payroll</span>
+          </h2>
+        </div>
 
         <div className="sidebar-balance">
           <div className="sidebar-balance-value">₹ {balance?.toLocaleString?.() ?? balance}</div>

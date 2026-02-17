@@ -1,6 +1,6 @@
-/* Design system: fintech-style dashboard */
+/* Design system: professional financial SaaS dashboard */
 :root {
-  font-family: "Outfit", system-ui, sans-serif;
+  font-family: "Inter", system-ui, -apple-system, sans-serif;
   line-height: 1.5;
   font-weight: 400;
   font-synthesis: none;
@@ -8,37 +8,40 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
-  /* Palette */
-  --bg-main: #f0f4f8;
+  /* Financial color palette */
+  --primary: #1E3A8A;
+  --primary-dark: #1e293b;
+  --accent: #10B981;
+  --accent-hover: #059669;
+  --danger: #EF4444;
+  --danger-hover: #dc2626;
+  --bg-main: #F3F4F6;
   --bg-card: #ffffff;
-  --bg-sidebar: #0c1222;
-  --bg-sidebar-hover: #151d32;
-  --bg-sidebar-active: rgba(245, 158, 11, 0.15);
-  --border: #e2e8f0;
-  --border-focus: #f59e0b;
+  --bg-sidebar: #0f172a;
+  --bg-sidebar-hover: #1e293b;
+  --bg-sidebar-active: rgba(16, 185, 129, 0.15);
+  --border: #e5e7eb;
+  --border-focus: #1E3A8A;
 
-  --text: #0f172a;
-  --text-muted: #64748b;
+  --text: #111827;
+  --text-muted: #6b7280;
   --text-sidebar: #e2e8f0;
   --text-sidebar-muted: #94a3b8;
 
-  --accent: #f59e0b;
-  --accent-hover: #d97706;
-  --accent-soft: rgba(245, 158, 11, 0.12);
-  --success: #059669;
-  --success-soft: rgba(5, 150, 105, 0.12);
-  --warn: #d97706;
-  --warn-soft: rgba(217, 119, 6, 0.12);
-  --danger: #dc2626;
-  --danger-soft: rgba(220, 38, 38, 0.12);
+  --success: #10B981;
+  --success-soft: rgba(16, 185, 129, 0.12);
+  --warn: #f59e0b;
+  --warn-soft: rgba(245, 158, 11, 0.12);
+  --accent-soft: rgba(16, 185, 129, 0.12);
 
-  --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.06);
-  --shadow: 0 4px 12px rgba(15, 23, 42, 0.08);
-  --shadow-lg: 0 12px 28px rgba(15, 23, 42, 0.12);
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.07), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -4px rgba(0, 0, 0, 0.05);
   --radius: 12px;
   --radius-sm: 8px;
   --radius-lg: 16px;
-  --transition: 0.2s ease;
+  --radius-xl: 20px;
+  --transition: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 * {
@@ -60,14 +63,17 @@ body {
 button {
   font-family: inherit;
   cursor: pointer;
-  transition: background-color var(--transition), transform var(--transition), box-shadow var(--transition);
+  transition: transform var(--transition), box-shadow var(--transition), background-color var(--transition);
+}
+button:hover:not(:disabled) {
+  transform: scale(1.02);
+}
+button:active:not(:disabled) {
+  transform: scale(0.98);
 }
 button:focus-visible {
   outline: 2px solid var(--border-focus);
   outline-offset: 2px;
-}
-button:active {
-  transform: scale(0.98);
 }
 
 input, select {
@@ -77,7 +83,7 @@ input, select {
 input:focus, select:focus {
   outline: none;
   border-color: var(--border-focus);
-  box-shadow: 0 0 0 3px var(--accent-soft);
+  box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.1);
 }
 
 a {
