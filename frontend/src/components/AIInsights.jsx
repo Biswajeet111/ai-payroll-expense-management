@@ -15,10 +15,18 @@ export default function AIInsights({ refreshKey }) {
   const [burn, setBurn] = useState(null);
   const [anomalies, setAnomalies] = useState(null);
   const [prediction, setPrediction] = useState(null);
+  const [error, setError] = useState(null);
+  const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
     const fetchAll = async () => {
       try {
+        if (!BASE_URL) {
+          setError("API URL is not configured (VITE_API_URL is missing).");
+          setLoaded(true);
+          return;
+        }
+
         const [healthRes, burnRes, anomaliesRes, predictionRes] = await Promise.all([
           axios.get(`${BASE_URL}/financial-health/`),
           axios.get(`${BASE_URL}/burn-rate-alert/`),
@@ -29,8 +37,12 @@ export default function AIInsights({ refreshKey }) {
         setBurn(burnRes.data);
         setAnomalies(anomaliesRes.data);
         setPrediction(predictionRes.data);
+        setError(null);
+        setLoaded(true);
       } catch (err) {
         console.error("AI Insights fetch error:", err);
+        setError("Unable to load insights. Please check that the API is running and reachable.");
+        setLoaded(true);
       }
     };
     fetchAll();
@@ -38,6 +50,13 @@ export default function AIInsights({ refreshKey }) {
 
   return (
     <div className="insights-panel">
+      {error && (
+        <div className="insight-block risky">
+          <div className="insight-label">Insights unavailable</div>
+          <div className="insight-status">{error}</div>
+        </div>
+      )}
+
       {health && (
         <div className={`insight-block ${getHealthClass(health.status)}`}>
           <div className="insight-label">Financial health score</div>
@@ -77,11 +96,22 @@ export default function AIInsights({ refreshKey }) {
         </div>
       )}
 
-      {!health && !burn && (
+      {!loaded && !error && (
         <div className="list-empty" style={{ padding: 24 }}>
           Loading insights…
         </div>
       )}
+
+      {loaded &&
+        !error &&
+        !health &&
+        !burn &&
+        !prediction &&
+        !(anomalies?.anomalies?.length > 0) && (
+          <div className="list-empty" style={{ padding: 24 }}>
+            No insights available yet. Try adding employees and expenses.
+          </div>
+        )}
     </div>
   );
 }

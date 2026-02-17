@@ -10,6 +10,12 @@ export default function DownloadReport() {
   const downloadReport = async () => {
     setLoading(true);
     try {
+      if (!BASE_URL) {
+        alert("API URL is not configured. Please set VITE_API_URL in your frontend .env file.");
+        setLoading(false);
+        return;
+      }
+
       const [summaryRes, healthRes, burnRes, expensesRes, anomaliesRes, predictionRes] =
         await Promise.all([
           axios.get(`${BASE_URL}/dashboard-summary/`),

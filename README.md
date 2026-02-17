@@ -1,125 +1,181 @@
-💼 AI Payroll & Expense Management
-<p align="center"> Intelligent Payroll Monitoring with Real‑Time Financial Insights </p> <p align="center"> <img src="https://img.shields.io/badge/Backend-FastAPI-green"> <img src="https://img.shields.io/badge/Frontend-React-blue"> <img src="https://img.shields.io/badge/Database-PostgreSQL-orange"> <img src="https://img.shields.io/badge/Deployment-Render-purple"> </p>
+AI Payroll & Expense Management
+================================
 
-## 🚀 Overview
-AI Payroll is a full‑stack payroll and expense management system that provides:
+Intelligent payroll and expense management with real‑time financial insights and AI‑driven analytics.
 
-Automated salary calculations
+### Overview
 
-Real‑time financial analytics
+AI Payroll is a full‑stack system for managing employee payroll and business expenses with:
 
-Burn rate monitoring
+- **Automated salary calculations** (base salary, bonus, deductions)
+- **Real‑time financial analytics** (payroll, expenses, net balance)
+- **Burn rate monitoring and alerts**
+- **AI‑based financial health scoring and insights**
+- **Anomaly detection, monthly reporting, and PDF export**
 
-AI‑based financial health scoring
+The stack is **FastAPI + SQLAlchemy + PostgreSQL** on the backend and **React + Vite** on the frontend, with deployment targeting platforms like Render.
 
-Built using FastAPI + PostgreSQL + React and deployed on Render.
+### Features
 
-## 🔗 Live Links
-Backend API:
+- **Employee management**
+  - Add employees with base salary, bonus, and deductions
+  - View and delete employees
+  - Automatic net salary calculation
 
-Swagger Docs:
-/docs
+- **Expense management**
+  - Add expenses with categories
+  - View and delete expenses
+  - Real‑time updates reflected in dashboard metrics
 
-## ✨ Features
+- **Smart financial dashboard**
+  - Total payroll
+  - Total expenses
+  - Net balance
+  - Burn rate percentage
+  - Category‑wise expense visualization
 
-### 👨‍💼 Employee Management
-Add Employees
+- **AI insights engine**
+  - Financial health score and status
+  - Burn rate risk classification (stable, monitor, high risk)
+  - Expense anomaly detection (unusually high expenses)
+  - Simple cashflow prediction for the next month
+  - Budget limit alert endpoint
 
-View Employee List
+- **Reporting**
+  - Download a complete financial report as a PDF from the dashboard
+  - Includes summary metrics, AI insights, anomalies, and detailed expense list
 
-Delete Employees
+### Architecture
 
-Auto ID Generation
+- **Backend** (`backend/`)
+  - FastAPI application (`main.py`)
+  - SQLAlchemy models and PostgreSQL database
+  - REST APIs for employees, expenses, dashboards, and AI insights
 
-Salary Calculation (Base + Bonus − Deductions)
+- **Frontend** (`frontend/`)
+  - React + Vite SPA
+  - Axios‑based API client
+  - Responsive dashboard UI with charts and AI insights panel
 
-### 💸 Expense Management
-Add Expenses
+### Tech Stack
 
-Category Tracking
+- **Backend**
+  - FastAPI
+  - SQLAlchemy
+  - PostgreSQL
+  - Uvicorn
 
-Expense Deletion
+- **Frontend**
+  - React
+  - Vite
+  - Axios
+  - Recharts
+  - jsPDF (PDF report generation)
 
-Real-Time Updates
+### API Highlights
 
-### 📊 Smart Dashboard
-Total Payroll
+Key backend endpoints exposed by `main.py`:
 
-Total Expenses
+- **Health and summary**
+  - `GET /` – API health check
+  - `GET /dashboard-summary/` – total payroll, total expenses, net balance
 
-Net Balance
+- **Employees**
+  - `GET /employees/`
+  - `POST /employees/`
+  - `PUT /employees/{emp_id}`
+  - `DELETE /employees/{emp_id}`
 
-Burn Rate Monitoring
+- **Expenses**
+  - `GET /expenses/`
+  - `POST /expenses/`
+  - `PUT /expenses/{exp_id}`
+  - `DELETE /expenses/{exp_id}`
 
-## 🤖 AI Insights Engine
-Financial Health Score
+- **AI insights**
+  - `GET /financial-health/`
+  - `GET /burn-rate-alert/`
+  - `GET /expense-anomalies/`
+  - `GET /monthly-report/`
+  - `GET /cashflow-prediction/`
+  - `GET /budget-alert/`
 
-Burn Rate Risk Detection
+Interactive API documentation is available at `/docs` when the backend is running.
 
-Intelligent Status Alerts
+### Business Logic Summary
 
-## 🧠 AI Logic
-Financial Health Score
-Health Score = (Net Balance / Total Payroll) × 100
-Score Range	Status
-> 70	Healthy
-40 – 70	Moderate
-< 40	Risky
-Burn Rate
-Burn Rate = (Total Expenses / Total Payroll) × 100
-Burn Rate	Alert
-< 40%	Stable
-40–70%	Monitor
-> 70%	High Risk
+- **Financial health score**
+  - Formula: \((\text{Net Balance} / \text{Total Payroll}) \times 100\)
+  - Status:
+    - `> 70` – Healthy
+    - `40–70` – Moderate
+    - `< 40` – Risky
 
+- **Burn rate**
+  - Formula: \((\text{Total Expenses} / \text{Total Payroll}) \times 100\)
+  - Alerts:
+    - `< 40%` – Stable
+    - `40–70%` – Monitor
+    - `> 70%` – High risk
 
-## 🏗️ Tech Stack
-Backend
-FastAPI
+### Local Development Setup
 
-SQLAlchemy
+#### Prerequisites
 
-PostgreSQL
+- Python 3.10+
+- Node.js 18+ and npm
+- PostgreSQL instance
 
-Uvicorn
+#### Backend
 
-Frontend
-React
-
-Axios
-
-CSS
-
-Deployment
-Render (Web Service + PostgreSQL)
-
-## 📂 Project Structure
-backend/
-frontend/
-README.md
-⚙️ Local Setup
-Backend
+```bash
 cd backend
 pip install -r requirements.txt
 uvicorn main:app --reload
-Frontend
+```
+
+The API will be available at `http://127.0.0.1:8000`.
+
+#### Frontend
+
+```bash
 cd frontend
 npm install
 npm run dev
-🔐 Environment Variable
-DATABASE_URL=your_render_database_url
-🎯 Hackathon Demo Flow
-Add Employee
+```
 
-Add Expense
+By default Vite runs at `http://localhost:5173`.
 
-Dashboard updates automatically
+### Environment Configuration
 
-Check AI Financial Health
+#### Backend (`backend`)
 
-Monitor Burn Rate
+Set at least:
 
-Delete employee → instant refresh
+- **`DATABASE_URL`** – PostgreSQL connection string compatible with SQLAlchemy (e.g. from Render).
+- **`CORS_ORIGINS`** (optional) – comma‑separated list of allowed frontend origins, for example:
+  - `http://localhost:5173,https://your-frontend-domain`
 
-👨‍💻 Team
-Biswajeet Kumar
+#### Frontend (`frontend/.env`)
+
+- **`VITE_API_URL`** – base URL of the FastAPI backend, for example:
+  - `http://127.0.0.1:8000` (local)
+  - `https://ai-payroll-expense-management.onrender.com` (deployed)
+
+The React app reads this value via `import.meta.env.VITE_API_URL`.
+
+### Typical Usage Flow
+
+1. Start backend and frontend locally.
+2. Open the dashboard in the browser.
+3. Add employees with salary components.
+4. Add expenses under relevant categories.
+5. Observe:
+   - Dashboard cards (payroll, expenses, net balance, burn rate)
+   - AI insights (financial health, burn rate alerts, anomalies, prediction)
+6. Optionally download the consolidated PDF financial report from the dashboard.
+
+### Author
+
+- Biswajeet Kumar
+
